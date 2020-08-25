@@ -9,6 +9,10 @@ const Author = new Schema({
 
 const Book = new Schema({
   title: String,
+  thumbnail: {
+    type: String,
+    default: "/static11/images/default_thumbnail.png",
+  },
   authors: [Author], // 위에서 만든 Author 스키마를 가진 객체들의 배열형태로 설정했습니다.
   price: Number,
   tags: [String],

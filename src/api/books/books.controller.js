@@ -10,6 +10,7 @@ exports.create = async (ctx) => {
   // Book 인스턴스를 생성합니다
   const book = new Book({
     title,
+    thumbnail,
     authors,
     price,
     tags,
@@ -109,6 +110,7 @@ exports.replace = async (ctx) => {
         birth: Joi.string().required(), // 이런식으로 이메일도 손쉽게 검증가능합니다
       })
     ),
+    thumbnail: Joi.required(),
     publishedDate: Joi.date().required(),
     price: Joi.number().required(),
     tags: Joi.array().items(Joi.string().required()),
