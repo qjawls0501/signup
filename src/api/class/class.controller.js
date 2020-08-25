@@ -25,15 +25,14 @@ exports.list = async (ctx) => {
   ctx.body = classes;
 };
 
-exports.create = async (ctx) => {
+exports.localRegister = async (ctx) => {
   // request body 에서 값들을 추출합니다
-  const { title, authors, publishedDate, price, tags } = ctx.request.body;
+  const { title, authors, price, tags } = ctx.request.body;
 
   // Class 인스턴스를 생성합니다
   const Class = new Class({
     title,
     authors,
-    publishedDate,
     price,
     tags,
   });
@@ -111,7 +110,6 @@ exports.replace = async (ctx) => {
         email: Joi.string().email().required(), // 이런식으로 이메일도 손쉽게 검증가능합니다
       })
     ),
-    publishedDate: Joi.date().required(),
     price: Joi.number().required(),
     tags: Joi.array().items(Joi.string().required()),
   });
