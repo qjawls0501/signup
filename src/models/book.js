@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Class 에서 사용할 서브다큐먼트의 스키마입니다.
+// Book 에서 사용할 서브다큐먼트의 스키마입니다.
+const Author = new Schema({
+  name: String,
+  birth: String,
+});
 
-const Class = new Schema({
+const Book = new Schema({
   title: String,
-  authors: String, // 위에서 만든 Author 스키마를 가진 객체들의 배열형태로 설정했습니다.
+  authors: [Author], // 위에서 만든 Author 스키마를 가진 객체들의 배열형태로 설정했습니다.
   price: Number,
   tags: [String],
   createdAt: {
@@ -16,4 +20,4 @@ const Class = new Schema({
 });
 
 // 스키마를 모델로 변환하여, 내보내기 합니다.
-module.exports = mongoose.model("Class", Class);
+module.exports = mongoose.model("Book", Book);
