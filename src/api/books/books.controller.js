@@ -10,14 +10,9 @@ exports.create = async (ctx) => {
     // 객체의 field 를 검증합니다.
     // 뒤에 required() 를 붙여주면 필수 항목이라는 의미입니다
     title: Joi.string().required(),
-    authors: Joi.array().items(
-      Joi.object().keys({
-        name: Joi.string().required(),
-        birth: Joi.string().required(), // 이런식으로 이메일도 손쉽게 검증가능합니다
-      })
-    ),
-    price: Joi.number().required(),
-    tags: Joi.array().items(Joi.string().required()),
+    authors: Joi.string().required(),
+    price: Joi.string().required(),
+    tags: Joi.string().required(),
   });
   const result = schema.validate(ctx.request.body);
   // Book 인스턴스를 생성합니다
@@ -84,8 +79,7 @@ exports.list = async (ctx) => {
     // .exec() 를 뒤에 붙여줘야 실제로 데이터베이스에 요청이 됩니다.
     // 반환값은 Promise 이므로 await 을 사용 할 수 있습니다.
     books = await Book.find()
-      .sort({ _id: -1 }) // _id 의 역순으로 정렬합니다
-      .limit(3) // 3개반 보여지도록 정렬합니다
+      .sort({ _id: -1 }) // _id 의 역순으로 정렬합니다// 3개반 보여지도록 정렬합니다
       .exec(); // 데이터를 서버에 요청합니다.
   } catch (e) {
     return ctx.throw(500, e);
