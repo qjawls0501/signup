@@ -6,11 +6,28 @@ const {
 exports.create = async (ctx) => {
   // request body 에서 값들을 추출합니다
   const { title, authors, price, tags } = ctx.request.body;
-
+  const schema = Joi.object().keys({
+    // 객체의 field 를 검증합니다.
+    // 뒤에 required() 를 붙여주면 필수 항목이라는 의미입니다
+    title: Joi.string().required(),
+    authors: Joi.array().items(
+      Joi.object().keys({
+        name: Joi.string().required(),
+        birth: Joi.string().required(), // 이런식으로 이메일도 손쉽게 검증가능합니다
+      })
+    ),
+    price: Joi.number().required(),
+    tags: Joi.array().items(Joi.string().required()),
+  });
+  const result = schema.validate(ctx.request.body);
   // Book 인스턴스를 생성합니다
+  if (result.error) {
+    ctx.status = 400;
+    return;
+  }
+
   const book = new Book({
     title,
-    thumbnail,
     authors,
     price,
     tags,
@@ -100,21 +117,6 @@ exports.replace = async (ctx) => {
   }
 
   // 먼저, 검증 할 스키마를 준비해야합니다.
-  const schema = Joi.object().keys({
-    // 객체의 field 를 검증합니다.
-    // 뒤에 required() 를 붙여주면 필수 항목이라는 의미입니다
-    title: Joi.string().required(),
-    authors: Joi.array().items(
-      Joi.object().keys({
-        name: Joi.string().required(),
-        birth: Joi.string().required(), // 이런식으로 이메일도 손쉽게 검증가능합니다
-      })
-    ),
-    thumbnail: Joi.required(),
-    publishedDate: Joi.date().required(),
-    price: Joi.number().required(),
-    tags: Joi.array().items(Joi.string().required()),
-  });
 
   // 그 다음엔, validate 를 통하여 검증을 합니다.
   const result = Joi.validate(ctx.request.body, schema); // 첫번째 파라미터는 검증할 객체이고, 두번째는 스키마입니다.
